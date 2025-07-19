@@ -1,6 +1,3 @@
-"""
-file for testing random stuff
-"""
 
 class Solution(object):
     def gcdOfStrings(self, str1, str2):
