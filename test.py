@@ -1,35 +1,38 @@
 """
-Input: height = [1,8,6,2,5,4,8,3,7]
-Output: 49
-Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+Given two 0-indexed integer arrays nums1 and nums2, return a list answer of size 2 where:
+
+answer[0] is a list of all distinct integers in nums1 which are not present in nums2.
+answer[1] is a list of all distinct integers in nums2 which are not present in nums1.
+Note that the integers in the lists may be returned in any order.
+
+Example 1:
+Input: nums1 = [1,2,3], nums2 = [2,4,6]
+Output: [[1,3],[4,6]]
+Explanation:
+For nums1, nums1[1] = 2 is present at index 0 of nums2, whereas nums1[0] = 1 and nums1[2] = 3 are not present in nums2. Therefore, answer[0] = [1,3].
+For nums2, nums2[0] = 2 is present at index 1 of nums1, whereas nums2[1] = 4 and nums2[2] = 6 are not present in nums1. Therefore, answer[1] = [4,6].
 """
 class Solution(object):
-    def maxArea(self, height):
+    def findDifference(self, nums1, nums2):
         """
-        :type height: List[int]
-        :rtype: int
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[List[int]]
         """
-        left = 0 
-        right = len(height) - 1
-        area = 0
-        Max_area = 0
-        while left < right:
-            # Вычисляем текущую площадь, это правильно
-            area = min(height[left], height[right]) * (right - left)
-            
-            if area > Max_area: # Или просто Max_area = max(Max_area, area)
-                Max_area = area
+        set1 = set(nums1)
+        set2 = set(nums2)
 
-            if height[left] < height[right]:
-                left += 1  # Двигаем левый указатель вправо
-            # Иначе (если высота правой линии меньше или равна высоте левой)
-            else:
-                right -= 1 # Двигаем правый указатель влево
+        # Разница множеств: только уникальные элементы
+        list_num1 = list(set1 - set2)
+        list_num2 = list(set2 - set1)
 
-        return Max_area
+        return [list_num1, list_num2]
 
+
+        
+        
 
 # Зона тестирования
 solver = Solution()
-print(solver.maxArea([1,8,6,2,5,4,8,3,7]))
+print(solver.findDifference([1,2,3], [2,4,6]))
 
