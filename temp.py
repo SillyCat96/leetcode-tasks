@@ -1,36 +1,64 @@
 """
-Given an array of integers nums, calculate the pivot index of this array.
-The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the
- sum of all the numbers strictly to the index's right.
-If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. 
-This also applies to the right edge of the array.
+Two strings are considered close if you can attain one from the other using the following operations:
 
-Return the leftmost pivot index. If no such index exists, return -1.
-Input: nums = [1,7,3,6,5,6]
-Output: 3
-Explanation:
-The pivot index is 3.
-Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
-Right sum = nums[4] + nums[5] = 5 + 6 = 11
+Operation 1: Swap any two existing characters.
+For example, abcde -> aecdb
+Operation 2: Transform every occurrence of one existing character into another existing character, and do the same with the other character.
+For example, aacabb -> bbcbaa (all a's turn into b's, and all b's turn into a's)
+You can use the operations on either string as many times as necessary.
+
+Given two strings, word1 and word2, return true if word1 and word2 are close, and false otherwise.
+
+Input: word1 = "abc", word2 = "bca"
+Output: true
+Explanation: You can attain word2 from word1 in 2 operations.
+Apply Operation 1: "abc" -> "acb"
+Apply Operation 1: "acb" -> "bca"
+Example 2:
+
+Input: word1 = "a", word2 = "aa"
+Output: false
+Explanation: It is impossible to attain word2 from word1, or vice versa, in any number of operations.
 """
-
-import numpy as np
-
+from collections import Counter
 class Solution(object):
-    def pivotIndex(self, nums):
+    def closeStrings(self, word1, word2):
         """
-        :type nums: List[int]
-        :rtype: int
+        :type word1: str
+        :type word2: str
+        :rtype: bool
         """
-        arr = np.array(nums)
-        total_sum = arr.sum()
-        left_sum = 0
+       
+        # Шаг 1: Проверяем длину
+        if len(word1) != len(word2):
+            return False
 
-        for i in range(len(arr)):
-            right_sum = total_sum - left_sum - arr[i]
-            if left_sum == right_sum:
-                return i
-            left_sum += arr[i]
+        # Шаг 2: Подсчитываем частоты символов
+        count1 = Counter(word1)
+        count2 = Counter(word2)
+        # Шаг 3: Проверяем набор уникальных символов
+        # Должны иметь одинаковые символы, независимо от их частоты
+        # Используем set(count1.keys()) для получения уникальных символов
+        if set(count1.keys()) != set(count2.keys()):
+            return False
 
-        return -1
+        # Шаг 4: Проверяем набор частот (значений)
+        # Сортируем списки частот и сравниваем их.
+        # Например, если count1 = {'a': 2, 'b': 1} и count2 = {'c': 2, 'd': 1},
+        # то list(count1.values()) = [2, 1] и list(count2.values()) = [2, 1].
+        # После сортировки они будут [1, 2] и [1, 2], что совпадает.
+        if sorted(count1.values()) != sorted(count2.values()):
+               return False
+        
+        # Если все проверки пройдены, строки являются "близкими"
+        return True
+
+
+
+
+
+
+# Зона тестирования
+solver = Solution()
+print(solver.closeStrings("abc","bca"))
 
