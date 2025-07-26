@@ -36,3 +36,5 @@ class Solution(object):
 solver = Solution()
 print(solver.findDifference([1,2,3], [2,4,6]))
 
+print(solver())
+

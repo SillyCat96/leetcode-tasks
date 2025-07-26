@@ -9,21 +9,29 @@ class Solution(object):
 
         n = len(grid)
         
-          # Step 1: Count the frequency of each row
-        # Use tuples for rows so they are hashable (can be used in Counter)
+        # Шаг 1: Подсчитываем частоту каждой строки
+        # Используем кортежи для строк, чтобы они были хешируемыми (могли использоваться в Counter)
         row_counts = Counter()
         for r in range(n):
             row_counts[tuple(grid[r])] += 1
         
-        # Step 2: Extract each column and check its frequency among the rows
+        # Шаг 2: Извлекаем каждый столбец и проверяем его частоту среди строк
         equal_pairs_count = 0
-        for c in range(n): # Iterate through each column index
+        for c in range(n): # Итерируем по каждому индексу столбца
             current_col = []
-            for r in range(n): # Collect elements of the current column
+            for r in range(n): # Собираем элементы текущего столбца
                 current_col.append(grid[r][c])
             
-            # Convert the column to a tuple to look it up in row_counts
+            # Преобразуем столбец в кортеж, чтобы найти его в row_counts
             equal_pairs_count += row_counts[tuple(current_col)]
             
         return equal_pairs_count
-        
+    
+# Пример 1
+grid1 = [[3, 2, 1],
+         [1, 7, 6],
+         [2, 7, 7]]
+solver1 = Solution()
+result1 = solver1.equalPairs(grid1)
+print(f"Для grid = {grid1}, количество равных пар: {result1}") # Ожидаем 1
+
