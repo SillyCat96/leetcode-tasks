@@ -1,40 +1,40 @@
 """
-Given two 0-indexed integer arrays nums1 and nums2, return a list answer of size 2 where:
+Given a string s and an integer k, 
+return the maximum number of vowel letters in any substring of s with length k.
+Vowel letters in English are 'a', 'e', 'i', 'o', and 'u'.
 
-answer[0] is a list of all distinct integers in nums1 which are not present in nums2.
-answer[1] is a list of all distinct integers in nums2 which are not present in nums1.
-Note that the integers in the lists may be returned in any order.
 
-Example 1:
-Input: nums1 = [1,2,3], nums2 = [2,4,6]
-Output: [[1,3],[4,6]]
-Explanation:
-For nums1, nums1[1] = 2 is present at index 0 of nums2, whereas nums1[0] = 1 and nums1[2] = 3 are not present in nums2. Therefore, answer[0] = [1,3].
-For nums2, nums2[0] = 2 is present at index 1 of nums1, whereas nums2[1] = 4 and nums2[2] = 6 are not present in nums1. Therefore, answer[1] = [4,6].
+
+
 """
 class Solution(object):
-    def findDifference(self, nums1, nums2):
+    def countVowels(self, s):
+        vowels = "aeiouAEIOU"
+        count = 0
+        for char in s:
+            if char in vowels:
+                count += 1
+        return count
+
+    def maxVowels(self, s, k):
         """
-        :type nums1: List[int]
-        :type nums2: List[int]
-        :rtype: List[List[int]]
+        :type s: str
+        :type k: int
+        :rtype: int
         """
-        set1 = set(nums1)
-        set2 = set(nums2)
-
-        # Разница множеств: только уникальные элементы
-        list_num1 = list(set1 - set2)
-        list_num2 = list(set2 - set1)
-
-        return [list_num1, list_num2]
-
-
-        
+        vowels = "aeiouAEIOU"
+        max_substring = cur_substring = self.countVowels(s[:k])
+        for r in range(k, len(s)):
+            if s[r - k] in vowels:
+                cur_substring -= 1
+            if s[r] in vowels:
+                cur_substring += 1
+            max_substring = max(max_substring, cur_substring)
+        return max_substring
         
 
 # Зона тестирования
 solver = Solution()
-print(solver.findDifference([1,2,3], [2,4,6]))
+print(solver.maxVowels("abciiidef",3))
 
-print(solver())
 
