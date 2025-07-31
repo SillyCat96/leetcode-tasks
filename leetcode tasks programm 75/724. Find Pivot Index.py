@@ -14,23 +14,19 @@ Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
 Right sum = nums[4] + nums[5] = 5 + 6 = 11
 """
 
-import numpy as np
-
-class Solution(object):
+class Solution:
     def pivotIndex(self, nums):
         """
-        :type nums: List[int]
-        :rtype: int
+        Находит самый левый поворотный индекс в массиве.
         """
-        arr = np.array(nums)
-        total_sum = arr.sum()
+        total_sum = sum(nums)
         left_sum = 0
-
-        for i in range(len(arr)):
-            right_sum = total_sum - left_sum - arr[i]
+        
+        for i, num in enumerate(nums):
+            right_sum = total_sum - left_sum - num
             if left_sum == right_sum:
                 return i
-            left_sum += arr[i]
-
+            left_sum += num
+            
         return -1
 

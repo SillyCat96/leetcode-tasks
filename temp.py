@@ -1,45 +1,32 @@
 """
-Given a binary array nums and an integer k, return the maximum number of consecutive
-1's in the array if you can flip at most k 0's.
+Given an array of integers nums, calculate the pivot index of this array.
+The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the
+ sum of all the numbers strictly to the index's right.
+If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. 
+This also applies to the right edge of the array.
 
-Example 1:
-Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
-Output: 6
-Explanation: [1,1,1,0,0,1,1,1,1,1,1]
-Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
-
-Example 2:
-Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
-Output: 10
-Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
-Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+Return the leftmost pivot index. If no such index exists, return -1.
+Input: nums = [1,7,3,6,5,6]
+Output: 3
+Explanation:
+The pivot index is 3.
+Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
+Right sum = nums[4] + nums[5] = 5 + 6 = 11
 """
 
-
-class Solution(object):
-    def longestOnes(self, nums, k):
+class Solution:
+    def pivotIndex(self, nums):
         """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
+        Находит самый левый поворотный индекс в массиве.
         """
-        left = 0
-        zero_count = 0
-        max_length = 0
+        total_sum = sum(nums)
+        left_sum = 0
+        
+        for i, num in enumerate(nums):
+            right_sum = total_sum - left_sum - num
+            if left_sum == right_sum:
+                return i
+            left_sum += num
+            
+        return -1
 
-        for right in range(len(nums)):
-            if nums[right] == 0:
-                zero_count += 1
-            
-            while zero_count > k:
-                if nums[left] == 0:
-                    zero_count -= 1
-                left += 1
-            
-            max_length = max(max_length, right - left + 1)
-            
-        return max_length
-    
-
-solver = Solution()
-print(solver.longestOnes([1,1,1,0,0,0,1,1,1,1,0], 2))
