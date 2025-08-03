@@ -1,69 +1,52 @@
 """
-In a linked list of size n, where n is even, the ith node (0-indexed) of the linked list is 
-known as the twin of the (n-1-i)th node, if 0 <= i <= (n / 2) - 1.
+Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
 
-For example, if n = 4, then node 0 is the twin of node 3, and node 1 is the twin of node 2. These are the only nodes with twins for n = 4.
-The twin sum is defined as the sum of a node and its twin.
+Only numbers 1 through 9 are used.
+Each number is used at most once.
+Return a list of all possible valid combinations. 
+The list must not contain the same combination twice, and the combinations may be returned in any order.
 
-Given the head of a linked list with even length, return the maximum twin sum of the linked list.
-
-Input: head = [5,4,2,1]
-Output: 6
+Input: k = 3, n = 7
+Output: [[1,2,4]]
 Explanation:
-Nodes 0 and 1 are the twins of nodes 3 and 2, respectively. All have twin sum = 6.
-There are no other nodes with twins in the linked list.
-Thus, the maximum twin sum of the linked list is 6. 
+1 + 2 + 4 = 7
 
-Input: head = [4,2,2,3]
-Output: 7
+Input: k = 3, n = 9
+Output: [[1,2,6],[1,3,5],[2,3,4]]
 Explanation:
-The nodes with twins present in this linked list are:
-- Node 0 is the twin of node 3 having a twin sum of 4 + 3 = 7.
-- Node 1 is the twin of node 2 having a twin sum of 2 + 2 = 4.
-Thus, the maximum twin sum of the linked list is max(7, 4) = 7. 
+1 + 2 + 6 = 9
+1 + 3 + 5 = 9
+2 + 3 + 4 = 9
+There are no other valid combinations
 """    
-# Definition for singly-linked list.
-# Определение для односвязного списка
-# Definition for singly-linked list.
-# Definition for singly-linked list.
-class ListNode(object):
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
 class Solution(object):
-    def pairSum(self, head):
+    def combinationSum3(self, k, n):
         """
-        :type head: Optional[ListNode]
-        :rtype: int
+        :type k: int
+        :type n: int
+        :rtype: List[List[int]]
         """
-        # Шаг 1: Найти середину списка с помощью двух указателей
-        slow = head
-        fast = head
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
+        result = []
 
-        # Шаг 2: Развернуть вторую половину списка, которая начинается с slow
-        prev = None
-        current = slow
-        while current:
-            next_node = current.next
-            current.next = prev
-            prev = current
-            current = next_node
+        def backtrack(k, n, start, current_combo):
+            if k == 0 and n == 0:
+                result.append(list(current_combo))
+                return
+            
+            if k < 0 or n < 0:
+                return
+            
+            for i in range(start, 10):
+                current_combo.append(i)
+                backtrack(k - 1, n - i, i + 1, current_combo)
+                current_combo.pop()
 
-        # Шаг 3: Вычислить максимальную сумму близнецов
-        max_twin_sum = 0
-        first_half = head
-        second_half_reversed = prev
+
+        backtrack(k, n, 1, [])
+
+        return result
         
-        while second_half_reversed:
-            twin_sum = first_half.val + second_half_reversed.val
-            max_twin_sum = max(max_twin_sum, twin_sum)
-            
-            first_half = first_half.next
-            second_half_reversed = second_half_reversed.next
-            
-        return max_twin_sum
+
+
+solver = Solution()
+print(solver.combinationSum3(3,9))
