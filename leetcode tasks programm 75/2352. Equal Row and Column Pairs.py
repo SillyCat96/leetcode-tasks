@@ -8,15 +8,15 @@ class Solution(object):
         """
 
         n = len(grid)
-        
+        equal_pairs_count = 0
         # Шаг 1: Подсчитываем частоту каждой строки
         # Используем кортежи для строк, чтобы они были хешируемыми (могли использоваться в Counter)
         row_counts = Counter()
         for r in range(n):
             row_counts[tuple(grid[r])] += 1
         
+        
         # Шаг 2: Извлекаем каждый столбец и проверяем его частоту среди строк
-        equal_pairs_count = 0
         for c in range(n): # Итерируем по каждому индексу столбца
             current_col = []
             for r in range(n): # Собираем элементы текущего столбца
